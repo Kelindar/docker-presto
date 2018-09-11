@@ -59,14 +59,14 @@ setup_dir() {
     echo "node.data-dir=/presto/data" >> $CONF_DIR/node.properties
     cat $CONF_DIR/node.properties
   else
-    sed -ri 's/^(node.environment=).*/\1'"$NODE_ENV"'/' "$CONF_DIR/node.properties"
-    sed -ri 's|^(node.data-dir=).*|\1'"/presto/data"'|' "$CONF_DIR/node.properties"
+    gsed -ri 's/^(node.environment=).*/\1'"$NODE_ENV"'/' "$CONF_DIR/node.properties"
+    gsed -ri 's|^(node.data-dir=).*|\1'"/presto/data"'|' "$CONF_DIR/node.properties"
   fi
   
   if [ ! -f $CONF_DIR/jvm.config ]; then
     warn "jvm.config not found, generate one with default settings..."
     echo "-server" > $CONF_DIR/jvm.config
-    echo "-Xmx2G" >> $CONF_DIR/jvm.config
+    echo "-Xmx8G" >> $CONF_DIR/jvm.config
     echo "-XX:+UseG1GC" >> $CONF_DIR/jvm.config
     echo "-XX:G1HeapRegionSize=32M" >> $CONF_DIR/jvm.config
     echo "-XX:+UseGCOverheadLimit" >> $CONF_DIR/jvm.config
@@ -86,8 +86,8 @@ setup_dir() {
     echo "discovery.uri=$SERV_URI" >> $CONF_DIR/config.properties
     cat $CONF_DIR/config.properties
   else
-    sed -ri 's/^(http-server.http.port=).*/\1'"8080"'/' "$CONF_DIR/config.properties"
-    sed -ri 's|^(discovery.uri=).*|\1'"$SERV_URI"'|' "$CONF_DIR/config.properties"
+    gsed -ri 's/^(http-server.http.port=).*/\1'"8080"'/' "$CONF_DIR/config.properties"
+    gsed -ri 's|^(discovery.uri=).*|\1'"$SERV_URI"'|' "$CONF_DIR/config.properties"
   fi
 
   if [ ! -f $CONF_DIR/log.properties ]; then
@@ -118,9 +118,11 @@ start_presto() {
 
   # use --privileged=true has the potential risk of causing clock drift
   # references: http://stackoverflow.com/questions/24288616/permission-denied-on-accessing-host-directory-in-docker
+  #docker run -d --name="$PRESTO_ALIAS" --restart=always -h presto -p $SERV_PORT:8080 -p 8042:8042 \
   docker run -d --name="$PRESTO_ALIAS" --restart=always -h presto -p $SERV_PORT:8080 \
     -v $CONF_DIR:/presto/etc:Z -v $DATA_DIR:/presto/data:Z \
-    zhicwu/presto:$PRESTO_TAG
+    kelindar/presto:$PRESTO_TAG
+  #    --network host \
 
   info "Try 'docker logs -f \"$PRESTO_ALIAS\"' to see if this works"
 }
