@@ -6,10 +6,10 @@
 FROM zhicwu/java:8
 
 # Set Maintainer Details
-MAINTAINER Zhichun Wu <zhicwu@gmail.com>
+MAINTAINER Roman Atachiants <kelindar@gmail.com>
 
 # Set Environment Variables
-ENV PRESTO_VERSION=0.146 PRESTO_HOME=/presto BASE_URL=https://repo1.maven.org/maven2/com/facebook/presto
+ENV PRESTO_VERSION=0.205 PRESTO_HOME=/presto BASE_URL=https://repo1.maven.org/maven2/com/facebook/presto
 
 
 # Download Presto
@@ -18,6 +18,7 @@ RUN apt-get update \
 	&& wget ${BASE_URL}/presto-server/${PRESTO_VERSION}/presto-server-${PRESTO_VERSION}.tar.gz \
 		${BASE_URL}/presto-cli/${PRESTO_VERSION}/presto-cli-${PRESTO_VERSION}-executable.jar \
 		${BASE_URL}/presto-jdbc/${PRESTO_VERSION}/presto-jdbc-${PRESTO_VERSION}.jar \
+		${BASE_URL}/presto-thrift-connector/${PRESTO_VERSION}/presto-thrift-connector-${PRESTO_VERSION}.jar \
 		${BASE_URL}/presto-verifier/${PRESTO_VERSION}/presto-verifier-${PRESTO_VERSION}-executable.jar \
 		${BASE_URL}/presto-benchmark-driver/${PRESTO_VERSION}/presto-benchmark-driver-${PRESTO_VERSION}-executable.jar \
 	&& rm -rf /var/lib/apt/lists/*
