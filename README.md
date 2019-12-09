@@ -7,7 +7,7 @@ ubuntu:14.04
  |
  |--- zhicwu/java:8
        |
-       |--- zhicwu/presto:latest
+       |--- kelindar/presto:latest
 ```
 * Official Ubuntu Trusty(14.04) docker image
 * Oracle JDK 8 latest release
