@@ -20,7 +20,7 @@ ubuntu:14.04
 ```
 - Setup scripts
 ```
-# git clone https://github.com/zhicwu/docker-presto.git
+# git clone https://github.com/kelindar/docker-presto.git
 # cd docker-presto
 # chmod +x *.sh
 ```
